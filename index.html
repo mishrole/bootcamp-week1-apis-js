@@ -1,0 +1,49 @@
+<html>
+<div>
+    <button onClick="processData()">Enviar perfil</button>
+</div>
+<script>
+
+    const sendData = async (url, document) => {
+        try {
+            const fetchOptions = {
+                method: 'POST',
+                body: document,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            const response = await fetch(url, fetchOptions)
+            const { data = {}, success } = await response.json()
+            if (success)
+                return data
+            throw new Error('Error when load response from backend')
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async function processData() {
+        try {
+            const Data = {
+                document: {
+                    firstName: 'Peru',
+                    lastName: 'Bicentenario',
+                    experiences: [],
+                    educations: []
+                }
+            }
+
+            const stringData = JSON.stringify(Data)
+
+            const urlHost = 'http://localhost:5000/api/v1/profile/storage'
+
+            const responseMessage = await sendData(urlHost, stringData)
+        } catch (error) {
+            throw error
+        }
+    }
+
+</script>
+
+</html>
